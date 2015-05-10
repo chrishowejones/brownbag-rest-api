@@ -9,7 +9,8 @@
 
 (defn create-customer [{:keys [id] :as customer}]
   (->
-   customer
-   (assoc :id (read-string id))
+   (if (instance? java.lang.String id)
+     (assoc customer :id (read-string id))
+     customer)
    (models/add-customer))
   {:customer customer})
