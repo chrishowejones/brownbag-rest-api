@@ -13,18 +13,16 @@
             [liberator.core :refer :all]))
 
 (defresource root
-  :available-media-types ["applicaton/json"]
+  :available-media-types ["application/json"]
   :allowed-methods [:options]
-  :handle-options (fn [_]
-                    (generate-string {:version "SNAPSHOT-0.0.1"}))
+  :handle-options (generate-string {:version "SNAPSHOT-0.0.1"})
   :handle-method-not-allowed "method not allowed!")
 
 
 (defroutes api-routes
   (context "/api" []
            (OPTIONS "/" [] root)
-           (context "/customers" []
-                    (customer-routes)))
+           (customer-routes))
   (route/not-found "Nothing to see here, move along."))
 
 (def app

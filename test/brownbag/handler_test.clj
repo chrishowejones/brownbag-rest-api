@@ -36,7 +36,7 @@
                   (re-find #"\{\"customer\":\{.*(\"id\":1).*\}\}")
                   second) "\"id\":1"))))
   (testing "user id 2 not found"
-    (let [response (app (mock/request :get "/api/customers/2"))]
+    (let [response (app (mock/request :get "/api/customers/3"))]
       (is (= (:status response) 404)))))
 
 (deftest test-post-customer
@@ -45,3 +45,5 @@
                                                          "{\"customer\":{\"id\":\"2\",\"name\":\"Fred\"}}")
                                       "application/json"))]
       (is true))))
+
+(app (mock/content-type (mock/request :get "/api/customers/1") "application/json"))
