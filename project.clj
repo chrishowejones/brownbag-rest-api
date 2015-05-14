@@ -5,10 +5,11 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [compojure "1.3.1"]
                  [ring/ring-defaults "0.1.2"]
-                 [ring-middleware-format "0.5.0"]
                  [org.clojure/tools.logging "0.3.1"]
                  [log4j "1.2.17"]
-                 [ring/ring-json "0.3.1"]]
+                 [ring/ring-json "0.3.1"]
+                 [liberator "0.12.2"]
+                 [cheshire "5.4.0"]]
   :plugins [[lein-ring "0.8.13"]]
   :ring {:handler brownbag.handler/app}
   :profiles

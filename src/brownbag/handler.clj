@@ -6,23 +6,25 @@
              [core :refer :all]
              [handler :as handler]
              [route :as route]]
+            [cheshire.core :refer :all]
             [ring.middleware
              [json :refer :all]]
-            [ring.util.response :refer [header response status]]))
+            [ring.util.response :refer [header response status]]
+            [liberator.core :refer :all]))
+
+(defresource root
+  :available-media-types ["applicaton/json"]
+  :allowed-methods [:options]
+  :handle-options (fn [_]
+                    (generate-string {:version "SNAPSHOT-0.0.1"}))
+  :handle-method-not-allowed "method not allowed!")
+
 
 (defroutes api-routes
   (context "/api" []
-           (OPTIONS "/" []
-                    (->
-                     (response {:version "SNAPSHOT-0.0.1"})
-                     (header "Allow" "OPTIONS")))
+           (OPTIONS "/" [] root)
            (context "/customers" []
-                    (customer-routes))
-           (ANY "/" []
-                (->
-                 (response nil)
-                 (status 405)
-                 (header "Allow" "OPTIONS"))))
+                    (customer-routes)))
   (route/not-found "Nothing to see here, move along."))
 
 (def app

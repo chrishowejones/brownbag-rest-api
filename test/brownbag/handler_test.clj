@@ -1,8 +1,6 @@
 (ns brownbag.handler-test
-  (:require [brownbag.handler :refer :all]
-            [brownbag.service.customer :refer [get-customer]]
-            [clojure.java.io :as io]
-            [clojure.test :refer :all]
+  (:require [clojure.test :refer :all]
+            [brownbag.handler :refer :all]
             [ring.mock.request :as mock]))
 
 (deftest test-api
@@ -11,7 +9,9 @@
       (is (= (:status response) 200))
       (is (= (-> response
                  :body)
-             "{\"version\":\"SNAPSHOT-0.0.1\"}"))))
+             "{\"version\":\"SNAPSHOT-0.0.1\"}"))
+      (is (= ((:headers response) "Allow")
+             "OPTIONS"))))
 
   (testing "not-found route"
     (let [response (app (mock/request :get "/api/invalid"))]
