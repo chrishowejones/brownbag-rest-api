@@ -7,3 +7,5 @@
 
 (defn add-customer [customer]
   (swap! customers conj customer))
+
+@customers

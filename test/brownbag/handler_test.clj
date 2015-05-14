@@ -47,3 +47,4 @@
       (is true))))
 
 (app (mock/content-type (mock/request :get "/api/customers/1") "application/json"))
+(app (mock/content-type (mock/request :post "/api/customers" "{\"customer\":{\"id\":\"22\",\"name\":\"dummy\"}}") "application/json"))

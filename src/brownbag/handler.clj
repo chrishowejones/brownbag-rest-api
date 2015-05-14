@@ -2,15 +2,13 @@
   (:require [brownbag
              [customer-handler :refer [customer-routes]]
              [middleware :refer [wrap-request-logger wrap-response-logger]]]
+            [cheshire.core :refer :all]
             [compojure
              [core :refer :all]
              [handler :as handler]
              [route :as route]]
-            [cheshire.core :refer :all]
-            [ring.middleware
-             [json :refer :all]]
-            [ring.util.response :refer [header response status]]
-            [liberator.core :refer :all]))
+            [liberator.core :refer :all]
+            [ring.middleware.multipart-params :refer [wrap-multipart-params]]))
 
 (defresource root
   :available-media-types ["application/json"]
@@ -28,7 +26,6 @@
 (def app
   (->
    (handler/api api-routes)
-   (wrap-json-params)
-   (wrap-json-response)
+   (wrap-multipart-params)
    (wrap-request-logger)
    (wrap-response-logger)))
