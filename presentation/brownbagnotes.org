@@ -1,0 +1,168 @@
+#+OPTIONS: toc:nil num:nil
+#+TITLE: Clojure Web Services 101
+#+AUTHOR: Chris Howe-Jones
+#+EMAIL: chris.howejones@gmail.com
+#+DATE: 7th May 2015
+#+REVEAL_SLIDE_NUMBER: false
+#+REVEAL_THEME: moon
+#+REVEAL_TRANS: default
+#+REVEAL_HLEVEL: 2
+#+REVEAL_ROOT: reveal.js-2.6.2/
+#+REVEAL_CENTER: true
+#+REVEAL_PLUGINS: (highlight markdown notes)
+
+
+* Brown bag session on RESTful Web Services with Clojure
+** WTF is Clojure?
+
+   * Clojure is a functional language.
+   * Clojure is a Lisp
+   * Clojure runs on JVM
+   * Clojure is compiled to Bytecode
+   * Clojure interoperates with Java (or Scala or JRuby..)
+
+** It's a baby REPL
+
+   The REPL (Read-Eval-Print-Loop) is your friend
+
+   REPL is an interpreter for Clojure
+     (although actually it JIT 'compiles' for Bytecode on JVM)
+
+** Syntax you need to know in Clojure
+
+   * Define
+   * Functions
+   * Data Structures
+
+** Define stuff
+
+   Define vars
+
+
+   [[./images/def-var.png]]
+
+** Functions
+
+   Functions are first class 'objects'.
+   * High order functions
+   * Pure functions
+   * Function composition
+   * Tail call optimization (sort of)
+
+*** Function calls
+
+   Function calls are lists:
+
+   #+BEGIN_SRC
+     (function arg1 arg2)
+   #+END_SRC
+
+*** Define functions
+
+  Function definition
+
+  [[./images/fn.png]]
+
+  Anonynous function (Lambda) - Syntactical sugar
+
+  [[./images/lambda.png]]
+
+*** Declare functions
+
+   Give your function a name using def:
+
+   [[./images/def-fn.png]]
+
+*** Declare fun
+
+   defn is quicker, easier, more seductive..
+
+   [[./images/defn.png]]
+
+** Data structures
+   - Immutable
+   - Persistent
+
+*** List
+
+    [[./images/list.png]]
+
+    Syntactical sugar:
+
+    [[./images/list-ss.png]]
+
+*** Vector
+
+    [[./images/vector.png]]
+
+    Syntactical sugar:
+
+    [[./images/vector-ss.png]]
+
+*** Maps
+
+    [[./images/hash-map.png]]
+
+    Syntactical sugar:
+
+    [[./images/hash-map-ss.png]]
+
+
+** Create a project using Compojure and Ring
+
+   + Ring is library that provides HTTP server abstraction
+   + Compojure is concise routing library
+   + Use leiningen to set up a ring - Compojure application.
+
+#+BEGIN_NOTES
+   Project dependencies & setup
+
+   Add dependencies for middleware and logging:
+     [ring/ring-json "0.3.1"]
+     [org.clojure/tools.logging "0.3.1"]
+     [log4j "1.2.17"]
+
+   Alterations to handler
+
+   1. Get handler working for OPTIONS
+      + Add require for compojure.handler as handler,
+        ring.middleware.format-response [wrap-restful-response], ring.util.response [response header]
+   2. Add logging
+      + Add wrap-request-logging middleware fn - takes handler returns fn that takes request
+        and calls onto (handler req) after destruct req and calling log/debug.
+#+END_NOTES
+
+** Leiningen
+
+   "Leiningen!" he shouted. "You're insane! They're not creatures you can fight—they're an elemental—an 'act of God!' Ten miles long, two miles wide—ants, nothing but ants! And every single one of them a fiend from hell..."
+
+*** Lein tool
+
+   + Leiningen is a Clojure based build and dependency management tool
+     - Think maven for Clojure
+     - Uses maven central
+     - Nexus
+     - Lein even downloads Clojure for you (it's just a jar!)
+
+
+
+
+*** Lein manages dependencies
+
+   Leiningen uses a project.clj file to define:
+     - Dependencies
+     - Plugins
+     - Profiles
+     ... etc
+
+     #+BEGIN_SRC clojure
+       :dependencies [...
+       [ring-middleware-format "0.5.0"]
+       [org.clojure/tools.logging "0.3.1"]]
+     #+END_SRC
+
+** Let's build a web application
+
+   #+BEGIN_SRC clojure
+      lein new compojure brownbag
+   #+END_SRC

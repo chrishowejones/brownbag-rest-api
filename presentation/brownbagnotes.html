@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Clojure Web Services 101</title>
+<meta name="author" content="(Chris Howe-Jones)"/>
+
+<link rel="stylesheet" href="reveal.js-2.6.2/css/reveal.min.css"/>
+<link rel="stylesheet" href="reveal.js-2.6.2/css/theme/moon.css" id="theme"/>
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'reveal.js-2.6.2/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<h1>Clojure Web Services 101</h1>
+<h2>Chris Howe-Jones</h2>
+<h2><a href="mailto:chris.howejones@gmail.com">chris.howejones@gmail.com</a></h2>
+<h2>7th May 2015</h2></section>
+
+
+<section id="sec-1" >
+
+<h2>Brown bag session on RESTful Web Services with Clojure</h2>
+</section>
+<section>
+<section id="sec-1-1" >
+
+<h3>WTF is Clojure?</h3>
+<ul class="org-ul">
+<li>Clojure is a functional language.
+</li>
+<li>Clojure is a Lisp
+</li>
+<li>Clojure runs on JVM
+</li>
+<li>Clojure is compiled to Bytecode
+</li>
+<li>Clojure interoperates with Java (or Scala or JRuby..)
+</li>
+</ul>
+</section>
+
+</section>
+<section>
+<section id="sec-1-2" >
+
+<h3>It's a baby REPL</h3>
+<p>
+The REPL (Read-Eval-Print-Loop) is your friend
+</p>
+
+<p>
+REPL is an interpreter for Clojure
+  (although actually it JIT 'compiles' for Bytecode on JVM)
+</p>
+</section>
+
+</section>
+<section>
+<section id="sec-1-3" >
+
+<h3>Syntax you need to know in Clojure</h3>
+<ul class="org-ul">
+<li>Define
+</li>
+<li>Functions
+</li>
+<li>Data Structures
+</li>
+</ul>
+</section>
+
+</section>
+<section>
+<section id="sec-1-4" >
+
+<h3>Define stuff</h3>
+<p>
+Define vars
+</p>
+
+
+<img src="./images/def-var.png" alt="def-var.png" />
+</section>
+
+</section>
+<section>
+<section id="sec-1-5" >
+
+<h3>Functions</h3>
+<p>
+Functions are first class 'objects'.
+</p>
+<ul class="org-ul">
+<li>High order functions
+</li>
+<li>Pure functions
+</li>
+<li>Function composition
+</li>
+<li>Tail call optimization (sort of)
+</li>
+</ul>
+
+</section>
+<section id="sec-1-5-1" >
+
+<h4>Function calls</h4>
+<p>
+Function calls are lists:
+</p>
+
+<pre  class="example">
+(function arg1 arg2)
+</pre>
+
+</section>
+<section id="sec-1-5-2" >
+
+<h4>Define functions</h4>
+<p>
+Function definition
+</p>
+
+<img src="./images/fn.png" alt="fn.png" />
+
+<p>
+Anonynous function (Lambda) - Syntactical sugar
+</p>
+
+<img src="./images/lambda.png" alt="lambda.png" />
+
+</section>
+<section id="sec-1-5-3" >
+
+<h4>Declare functions</h4>
+<p>
+Give your function a name using def:
+</p>
+
+<img src="./images/def-fn.png" alt="def-fn.png" />
+
+</section>
+<section id="sec-1-5-4" >
+
+<h4>Declare fun</h4>
+<p>
+defn is quicker, easier, more seductive..
+</p>
+
+<img src="./images/defn.png" alt="defn.png" />
+</section>
+
+</section>
+<section>
+<section id="sec-1-6" >
+
+<h3>Data structures</h3>
+<ul class="org-ul">
+<li>Immutable
+</li>
+<li>Persistent
+</li>
+</ul>
+
+</section>
+<section id="sec-1-6-1" >
+
+<h4>List</h4>
+<img src="./images/list.png" alt="list.png" />
+
+<p>
+Syntactical sugar:
+</p>
+
+<img src="./images/list-ss.png" alt="list-ss.png" />
+
+</section>
+<section id="sec-1-6-2" >
+
+<h4>Vector</h4>
+<img src="./images/vector.png" alt="vector.png" />
+
+<p>
+Syntactical sugar:
+</p>
+
+<img src="./images/vector-ss.png" alt="vector-ss.png" />
+
+</section>
+<section id="sec-1-6-3" >
+
+<h4>Maps</h4>
+<img src="./images/hash-map.png" alt="hash-map.png" />
+
+<p>
+Syntactical sugar:
+</p>
+
+<img src="./images/hash-map-ss.png" alt="hash-map-ss.png" />
+</section>
+
+</section>
+<section>
+<section id="sec-1-7" >
+
+<h3>Create a project using Compojure and Ring</h3>
+<ul class="org-ul">
+<li>Ring is library that provides HTTP server abstraction
+</li>
+<li>Compojure is concise routing library
+</li>
+<li>Use leiningen to set up a ring - Compojure application.
+</li>
+</ul>
+
+<aside class="notes">
+<p>
+Project dependencies &amp; setup
+</p>
+
+<p>
+Add dependencies for middleware and logging:
+  [ring/ring-json "0.3.1"]
+  [org.clojure/tools.logging "0.3.1"]
+  [log4j "1.2.17"]
+</p>
+
+<p>
+Alterations to handler
+</p>
+
+<ol class="org-ol">
+<li>Get handler working for OPTIONS
+<ul class="org-ul">
+<li>Add require for compojure.handler as handler,
+ring.middleware.format-response [wrap-restful-response], ring.util.response [response header]
+</li>
+</ul>
+</li>
+<li>Add logging
+<ul class="org-ul">
+<li>Add wrap-request-logging middleware fn - takes handler returns fn that takes request
+and calls onto (handler req) after destruct req and calling log/debug.
+</li>
+</ul>
+</li>
+</ol>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-1-8" >
+
+<h3>Leiningen</h3>
+<p>
+"Leiningen!" he shouted. "You're insane! They're not creatures you can fight—they're an elemental—an 'act of God!' Ten miles long, two miles wide—ants, nothing but ants! And every single one of them a fiend from hell&#x2026;"
+</p>
+
+</section>
+<section id="sec-1-8-1" >
+
+<h4>Lein tool</h4>
+<ul class="org-ul">
+<li>Leiningen is a Clojure based build and dependency management tool
+<ul class="org-ul">
+<li>Think maven for Clojure
+</li>
+<li>Uses maven central
+</li>
+<li>Nexus
+</li>
+<li>Lein even downloads Clojure for you (it's just a jar!)
+</li>
+</ul>
+</li>
+</ul>
+
+
+
+
+</section>
+<section id="sec-1-8-2" >
+
+<h4>Lein manages dependencies</h4>
+<p>
+Leiningen uses a project.clj file to define:
+</p>
+<ul class="org-ul">
+<li>Dependencies
+</li>
+<li>Plugins
+</li>
+<li>Profiles
+</li>
+</ul>
+<p>
+&#x2026; etc
+</p>
+
+<div class="org-src-container">
+
+<pre  class="src src-clojure">:dependencies [...
+[ring-middleware-format "0.5.0"]
+[org.clojure/tools.logging "0.3.1"]]
+</pre>
+</div>
+</section>
+
+</section>
+<section>
+<section id="sec-1-9" >
+
+<h3>Let's build a web application</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">lein new compojure brownbag
+</pre>
+</div>
+</section>
+</section>
+</div>
+</div>
+
+<script src="reveal.js-2.6.2/lib/js/head.min.js"></script>
+<script src="reveal.js-2.6.2/js/reveal.min.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: true,
+rollingLinks: false,
+keyboard: true,
+overview: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'reveal.js-2.6.2/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+ { src: 'reveal.js-2.6.2/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'reveal.js-2.6.2/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'reveal.js-2.6.2/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+]
+});
+</script>
+</body>
+</html>
