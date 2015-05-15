@@ -1,0 +1,27 @@
+## Customize the test machine
+machine:
+
+  # Override /etc/hosts
+  hosts:
+    circlehost: 127.0.0.1
+    dev.mycompany.com: 127.0.0.1
+
+  # Add some environment variables
+  environment:
+    CIRCLE_ENV: test
+
+## Customize test commands
+test:
+  override:
+    - lein test
+    - lein cloverage -o $CIRCLE_TEST_REPORTS/cloverage
+
+  post:
+    - lein with-profile production uberjar
+
+## Deploy to ??
+##deployment:
+##  staging:
+##    branch: master
+##    heroku:
+##      appname: nameless-lake-6474
