@@ -43,7 +43,8 @@
   (testing "post a user"
     (let [response (app (mock/content-type (mock/request :post "/api/customers"
                                                          "{\"customer\":{\"id\":\"2\",\"name\":\"Fred\"}}")
-                                           "application/json"))]
-      (let [location (get-in response [:header :location])]
-        (is (= location "/api/customers/2"))
-        (is (= status 301))))))
+                                           "application/json"))
+          status (:status response)
+          location (get-in response [:headers "Location"])]
+      (is (= location "/api/customers/2"))
+      (is (= status 303)))))
