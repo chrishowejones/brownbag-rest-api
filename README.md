@@ -3,6 +3,10 @@
 Demo for Brownbag session showing how to create a RESTful api using
 just Ring and Compojure.
 
+## Build Status
+
+[![Circle CI](https://circleci.com/gh/chrishowejones/brownbag-rest-api/tree/master.svg?style=svg)](https://circleci.com/gh/chrishowejones/brownbag-rest-api/tree/master)
+
 ## Prerequisites
 
 You will need [Leiningen][] 2.0.0 or above installed.
