@@ -30,7 +30,7 @@
   :post! (fn [ctx] (if-let [customer (parse-string (slurp
                                                     (get-in ctx [:request :body])) true)]
                      (create-customer (customer :customer))))
-  :handle-ok {:customer nil})
+  :post-redirect? (fn [ctx] {:location (str "/api/customers/" (get-in ctx [:customer :id]))}))
 
 (defn customer-routes []
   (routes
