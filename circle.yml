@@ -13,6 +13,7 @@ machine:
 ## Customize test commands
 test:
   override:
+    - lein migrate dev
     - lein test
     - lein cloverage -o $CIRCLE_TEST_REPORTS/cloverage
 
