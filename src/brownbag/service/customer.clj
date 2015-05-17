@@ -7,10 +7,8 @@
       {:customer customer}
       nil)))
 
-(defn create-customer [{:keys [id] :as customer}]
+(defn create-customer [customer]
   (->
-   (if (instance? java.lang.String id)
-     (assoc customer :id (read-string id))
-     customer)
-   (models/add-customer))
-  {:customer customer})
+   customer
+   (models/add-customer)
+   (get (keyword "scope_identity()"))))

@@ -3,7 +3,7 @@
             [clojure.test :refer :all]))
 
 (deftest test-get-customer
-  (testing "get user from model"
+  (testing "get customer from model"
     (with-redefs [brownbag.models.customer/get-customer-model (fn [_] {:id 1 :name "Chris"})]
       (is (= (get-customer 1)
              {:customer {:id 1 :name "Chris"}}))))
@@ -11,3 +11,9 @@
     (with-redefs [brownbag.models.customer/get-customer-model (fn [_] nil)]
       (is (= (get-customer 2)
              nil)))))
+
+(deftest test-create-customer
+  (testing "create customer"
+    (with-redefs [brownbag.models.customer/add-customer (fn [_] {(keyword "scope_identity()") 100})]
+      (is (= (create-customer {:name "new customer"})
+             100)))))

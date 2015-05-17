@@ -58,10 +58,12 @@
 
 (deftest test-post-customer
   (testing "post a user"
-    (let [response (app (mock/content-type (mock/request :post "/api/customers"
-                                                         "{\"customer\":{\"id\":\"99\",\"name\":\"Bill\"}}")
-                                           "application/json"))
-          status (:status response)
-          location (get-in response [:headers "Location"])]
-      (is (= location "/api/customers/99"))
-      (is (= status 303)))))
+    (with-redefs [brownbag.models.customer/add-customer (fn [_] {(keyword "scope_identity()") 99})]
+      (let [response (app (mock/content-type (mock/request :post "/api/customers"
+                                                           "{\"customer\":{\"name\":\"Bill\"}}")
+                                             "application/json"))
+            status (:status response)
+            location (get-in response [:headers "Location"])]
+        (println response)
+        (is (= location "/api/customers/99"))
+        (is (= status 303))))))

@@ -8,7 +8,7 @@
   (sql/db-do-commands db
                       (sql/create-table-ddl
                        :customers
-                       [:id "integer PRIMARY KEY"]
+                       [:id "bigint auto_increment PRIMARY KEY"]
                        [:name "varchar(256)"])))
 
 (defn drop-customer-table

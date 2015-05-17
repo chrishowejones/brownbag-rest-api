@@ -24,9 +24,8 @@
 
 (deftest test-create-customer
   (testing "create a new customer with id 2"
-    (is (= (do
-             (models/add-customer {:id 2 :name "Fred"})
-             (->
-              (sql/query models/db "select * from customers where id = 2")
-              first))
-           {:id 2 :name "Fred"}))))
+    (let [identity ((models/add-customer {:name "Fred"}) (keyword "scope_identity()"))]
+      (is (= (-> (sql/query models/db (str "select * from customers where id = " identity))
+                 first)
+             {:id identity :name "Fred"}))))
+  )

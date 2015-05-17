@@ -29,8 +29,8 @@
   :available-media-types media-types
   :post! (fn [ctx] (if-let [customer (parse-string (slurp
                                                     (get-in ctx [:request :body])) true)]
-                     (create-customer (customer :customer))))
-  :post-redirect? (fn [ctx] {:location (str "/api/customers/" (get-in ctx [:customer :id]))}))
+                     {:customer-id (create-customer (customer :customer))}))
+  :post-redirect? (fn [ctx] {:location (str "/api/customers/" (ctx :customer-id))}))
 
 (defn customer-routes []
   (routes
