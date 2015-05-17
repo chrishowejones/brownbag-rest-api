@@ -17,3 +17,9 @@ Content-Type: application/json
                 "name" : "Minion Dave"
         }
 }
+
+# invalid post
+POST http://localhost:3000/api/customers
+Content-Type: application/json
+
+{}
