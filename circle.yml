@@ -15,7 +15,6 @@ test:
   override:
     - lein joplin migrate dev
     - lein test
-    - lein cloverage -o $CIRCLE_TEST_REPORTS/cloverage
 
   post:
     - lein with-profile production uberjar
