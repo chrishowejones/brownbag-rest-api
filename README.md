@@ -1,7 +1,8 @@
 # brownbag
 
 Demo for Brownbag session showing how to create a RESTful api using
-just Ring and Compojure.
+just Ring and Compojure initially. Subsequently added liberator to map
+resources. Added prismatic schema for validation of data structures.
 
 ## Build Status
 
