@@ -45,6 +45,7 @@
           json-str (-> response
                        :body)]
       (is (= (:status response) 200))
+      (println "response=" response ", body=" json-str)
       (is (= (->> json-str
                   (re-find #"\{\"customer\":\{.*(\"name\":\"Chris\").*\}\}")
                   second)
@@ -57,13 +58,21 @@
       (is (= (:status response) 404)))))
 
 (deftest test-post-customer
-  (testing "post a user"
+  (testing "post a customer"
     (with-redefs [brownbag.models.customer/add-customer (fn [_] {(keyword "scope_identity()") 99})]
       (let [response (app (mock/content-type (mock/request :post "/api/customers"
                                                            "{\"customer\":{\"name\":\"Bill\"}}")
                                              "application/json"))
             status (:status response)
             location (get-in response [:headers "Location"])]
-        (println response)
         (is (= location "/api/customers/99"))
         (is (= status 303))))))
+
+(deftest test-post-invalid-customer
+  (testing "post an invalid customer"
+    (let [response (app (mock/content-type (mock/request :post "/api/customers"
+                                                         "{\"customer\":{\"invalid\": \"invalid value\", \"name\":\"Bill\"}}")
+                                           "application/json"))
+          status (:status response)]
+      (println response)
+      (is (= status 400)))))

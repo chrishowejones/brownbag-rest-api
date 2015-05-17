@@ -14,6 +14,7 @@ Content-Type: application/json
 
 {
         "customer": {
+                "dummy" : 1234,
                 "name" : "Minion Dave"
         }
 }
