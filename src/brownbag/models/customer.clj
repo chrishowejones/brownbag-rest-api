@@ -1,11 +1,23 @@
-(ns brownbag.models.customer)
+(ns brownbag.models.customer
+  (:require [korma
+             [core :refer :all]
+             [db :refer :all]]
+            [clojure.string :as string]))
 
-(def customers (atom [{:id 1 :name "Chris"}]))
+(def db {:classname   "org.h2.Driver"
+         :subprotocol "h2"
+         :subname     "./resources/db/customer;DATABASE_TO_UPPER=false"
+         :user        "sa"})
+
+(defdb customer-db db)
+
+(defentity customers)
 
 (defn get-customer-model [id]
-  (first (filter #(= (% :id) id) @customers)))
+  (first
+   (select customers
+           (where {:id id}))))
 
 (defn add-customer [customer]
-  (swap! customers conj customer))
-
-@customers
+  (insert customers
+          (values {:id (customer :id) :name (customer :name)})))
