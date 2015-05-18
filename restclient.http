@@ -7,6 +7,12 @@ User-Agent: Emacs24
 Accept-Encoding: application/json
 
 #
+# Options for api
+#
+OPTIONS http://localhost:3000/api
+Accept-Encoding: application/json
+
+#
 # Post works too, entity just goes after an empty line. Same is for PUT.
 #
 POST http://localhost:3000/api/customers

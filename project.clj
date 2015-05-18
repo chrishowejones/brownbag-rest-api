@@ -8,6 +8,7 @@
                  [org.clojure/tools.logging "0.3.1"]
                  [log4j "1.2.17"]
                  [ring/ring-json "0.3.1"]
+                 [http-kit "2.1.18"]
                  [liberator "0.13"]
                  [cheshire "5.4.0"]
                  [korma "0.4.1"]
@@ -18,6 +19,8 @@
                  [joplin.jdbc "0.2.12"]
                  [prismatic/schema "0.4.2"]]
   :source-paths ["src" "joplin"]
+  :main brownbag.main
+  :aot :all
   :plugins [[lein-ring "0.8.13"]
             [joplin.lein "0.2.10"]
             [lein-cloverage "1.0.2"]]
