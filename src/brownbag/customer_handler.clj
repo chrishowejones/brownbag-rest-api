@@ -17,7 +17,7 @@
 
 (def customer-data
   "A schema for customer data"
-  {:customer {
+  {:customer {(s/optional-key :id) s/Int
               :name s/Str
               }})
 
@@ -63,7 +63,3 @@
    (ANY "/customers/:id" [id] (customer-resources id))
    (ANY "/customers" []
         customers)))
-
-
-(comment
-)

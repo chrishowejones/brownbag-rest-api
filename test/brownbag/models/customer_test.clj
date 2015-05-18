@@ -8,7 +8,8 @@
   (sql/delete! spec :customers []))
 
 (defn seed-customers [spec]
-  (sql/insert! spec :customers {:id 1 :name "Chris"}))
+  (sql/insert! spec :customers {:id 1 :name "Chris"})
+  (sql/insert! spec :customers {:id 999 :name "Change this"}))
 
 (defn database-fixture [f]
   (clean-customers models/db)
@@ -29,3 +30,11 @@
                  first)
              {:id identity :name "Fred"}))))
   )
+
+(deftest test-update-customer
+  (testing "update an existing customer"
+    (let [name "Changed Name"
+          result (models/update-customer {:id 999 :name name})]
+      (is (= (-> (sql/query models/db (str "select * from customers where id=999"))
+                 first)
+             {:id 999 :name name})))))

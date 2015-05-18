@@ -21,3 +21,8 @@
 (defn add-customer [customer]
   (insert customers
           (values {:id (customer :id) :name (customer :name)})))
+
+(defn update-customer [customer]
+  (update customers
+          (set-fields {:name (customer :name)})
+          (where {:id (customer :id)})))

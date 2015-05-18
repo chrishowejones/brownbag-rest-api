@@ -22,7 +22,8 @@
 
 (deftest test-api
   (testing "Options"
-    (let [response (app (mock/request :options "/api/"))]
+    (let [response (app (mock/content-type (mock/request :options "/api")
+                                           "application/json"))]
       (is (= (:status response) 200))
       (is (= (-> response
                  :body)
@@ -45,7 +46,6 @@
           json-str (-> response
                        :body)]
       (is (= (:status response) 200))
-      (println "response=" response ", body=" json-str)
       (is (= (->> json-str
                   (re-find #"\{\"customer\":\{.*(\"name\":\"Chris\").*\}\}")
                   second)
@@ -74,5 +74,4 @@
                                                          "{\"customer\":{\"invalid\": \"invalid value\", \"name\":\"Bill\"}}")
                                            "application/json"))
           status (:status response)]
-      (println response)
       (is (= status 400)))))

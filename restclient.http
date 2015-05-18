@@ -2,7 +2,7 @@
 #
 # Test commands for restclient for REST API
 #
-GET http://localhost:3000/api/customers/1
+GET http://localhost:3000/api/customers/123
 User-Agent: Emacs24
 Accept-Encoding: application/json
 
@@ -13,13 +13,14 @@ OPTIONS http://localhost:3000/api
 Accept-Encoding: application/json
 
 #
-# Post works too, entity just goes after an empty line. Same is for PUT.
+# Post works too, entity just goes after an empty line.
 #
 POST http://localhost:3000/api/customers
 Content-Type: application/json
 
 {
         "customer": {
+                "id"   : 123,
                 "name" : "Minion Dave"
         }
 }

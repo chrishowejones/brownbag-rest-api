@@ -20,7 +20,6 @@
                  [prismatic/schema "0.4.2"]]
   :source-paths ["src" "joplin"]
   :main brownbag.main
-  :aot :all
   :plugins [[lein-ring "0.8.13"]
             [joplin.lein "0.2.10"]
             [lein-cloverage "1.0.2"]]
@@ -32,7 +31,8 @@
            :environments
            {:dev [{:db :sql :migrator :sql-mig}]}}
   :profiles
-  {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
+  {:uberjar {:aot :all}
+   :dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                         [ring-mock "0.1.5"]]}}
     :aliases
   {
