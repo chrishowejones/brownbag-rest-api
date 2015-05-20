@@ -37,4 +37,5 @@
           result (models/update-customer {:id 999 :name name})]
       (is (= (-> (sql/query models/db (str "select * from customers where id=999"))
                  first)
-             {:id 999 :name name})))))
+             {:id 999 :name name}))
+      (is (= result 1)))))

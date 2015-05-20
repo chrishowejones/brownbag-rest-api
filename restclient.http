@@ -2,7 +2,7 @@
 #
 # Test commands for restclient for REST API
 #
-GET http://localhost:3000/api/customers/123
+GET http://localhost:3000/api/customers/3333
 User-Agent: Emacs24
 Accept-Encoding: application/json
 
@@ -20,7 +20,6 @@ Content-Type: application/json
 
 {
         "customer": {
-                "id"   : 123,
                 "name" : "Minion Dave"
         }
 }
@@ -30,3 +29,28 @@ POST http://localhost:3000/api/customers
 Content-Type: application/json
 
 {}
+
+#
+# Put update to customer
+#
+POST http://localhost:3000/api/customers
+Content-Type: application/json
+
+{
+        "customer": {
+                "name" : "Minion Bob "
+        }
+}
+
+#
+# Put update to customer
+#
+PUT http://localhost:3000/api/customers/9999
+Content-Type: application/json
+
+{
+        "customer": {
+                "error": "invalid",
+                "name" : "Minion Bob "
+        }
+}

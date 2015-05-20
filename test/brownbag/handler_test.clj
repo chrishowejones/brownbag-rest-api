@@ -11,12 +11,14 @@
   (sql/delete! spec :customers []))
 
 (defn seed-customers [spec]
-  (sql/insert! spec :customers {:id 1 :name "Chris"}))
+  (sql/insert! spec :customers {:id 1 :name "Chris"})
+  (sql/insert! spec :customers {:id 888 :name "To be updated"}))
 
 (defn database-fixture [f]
   (clean-customers db)
   (seed-customers db)
-  (f))
+  (f)
+  (clean-customers db))
 
 (use-fixtures :once database-fixture)
 
@@ -53,8 +55,8 @@
       (is (= (->> json-str
                   (re-find #"\{\"customer\":\{.*(\"id\":1).*\}\}")
                   second) "\"id\":1"))))
-  (testing "user id 3 not found"
-    (let [response (app (mock/request :get "/api/customers/3"))]
+  (testing "user id 3333 not found"
+    (let [response (app (mock/request :get "/api/customers/3333"))]
       (is (= (:status response) 404)))))
 
 (deftest test-post-customer
@@ -66,7 +68,7 @@
             status (:status response)
             location (get-in response [:headers "Location"])]
         (is (= location "/api/customers/99"))
-        (is (= status 303))))))
+        (is (= status 201))))))
 
 (deftest test-post-invalid-customer
   (testing "post an invalid customer"
@@ -75,3 +77,36 @@
                                            "application/json"))
           status (:status response)]
       (is (= status 400)))))
+
+(deftest test-put-invalid-customer
+  (testing "put an invalid customer"
+    (let [response (-> :put
+                       (mock/request "/api/customers"
+                                     "{\"customer\":{\"invalid\": \"invalid value\", \"name\":\"Bill\"}}")
+                       (mock/content-type "application/json")
+                       app)
+          status (:status response)]
+      (is (= status 400)))))
+
+(deftest test-put-changed-customer
+  (testing "put a changed customer"
+    (let [response (-> :put
+                       (mock/request "/api/customers/888"
+                                     "{\"customer\":{\"name\":\"Bill\"}}")
+                       (mock/content-type "application/json")
+                       app)
+          status (:status response)]
+      (is (= status 204)))))
+
+(comment
+  (app (mock/request :get "/api/customers/1"))
+  (brownbag.service.customer/get-customer 1)
+  (brownbag.customer-handler/customer-exists? {:request {:customer {:id 1}}})
+   (-> :put
+                       (mock/request "/api/customers/9999"
+                                     "{\"customer\":{\"invalid\": \"invalid value\", \"name\":\"Bill\"}}")
+                       (mock/content-type "application/json")
+                       app)
+   (app (mock/request :get "/api/customers/1"))
+   (app (mock/request :get "/api/customers/3333"))
+   (seed-customers db))

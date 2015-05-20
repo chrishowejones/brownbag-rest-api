@@ -17,3 +17,10 @@
     (with-redefs [brownbag.models.customer/add-customer (fn [_] {(keyword "scope_identity()") 100})]
       (is (= (create-customer {:name "new customer"})
              100)))))
+
+(deftest test-update-customer
+  (testing "update customer"
+    (with-redefs [brownbag.models.customer/update-customer (fn [_] 1)
+                  get-customer (fn [_] {:customer {:id 100 :name "updated customer"}})]
+      (is (= (update-customer {:id 100 :name "updated customer"})
+             {:customer {:id 100 :name "updated customer"}})))))

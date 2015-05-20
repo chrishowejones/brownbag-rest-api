@@ -1,8 +1,8 @@
 (ns brownbag.models.customer
-  (:require [korma
+  (:require [clojure.tools.logging :as log]
+            [korma
              [core :refer :all]
-             [db :refer :all]]
-            [clojure.string :as string]))
+             [db :refer :all]]))
 
 (def db {:classname   "org.h2.Driver"
          :subprotocol "h2"
@@ -14,6 +14,7 @@
 (defentity customers)
 
 (defn get-customer-model [id]
+  (log/debug "get-customer-model for" id)
   (first
    (select customers
            (where {:id id}))))
