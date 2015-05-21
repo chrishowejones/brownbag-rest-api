@@ -21,7 +21,7 @@
 
 (defn add-customer [customer]
   (insert customers
-          (values {:id (customer :id) :name (customer :name)})))
+          (values customer)))
 
 (defn update-customer [customer]
   (update customers

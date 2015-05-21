@@ -1,6 +1,6 @@
 (ns brownbag.handler
   (:require [brownbag
-             [customer-handler :refer [customer-routes]]
+             [customer-handler :refer [customer-routes collection-example]]
              [middleware :refer [wrap-request-logger wrap-response-logger]]]
             [cheshire.core :refer :all]
             [compojure

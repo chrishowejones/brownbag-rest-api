@@ -23,5 +23,4 @@
 
 (defn update-customer [customer]
   (log/debug "Calling update-customer for " customer)
-  (models/update-customer customer)
-  (get-customer (customer :id)))
+  (models/update-customer customer))

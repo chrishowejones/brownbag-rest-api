@@ -108,5 +108,25 @@
                        (mock/content-type "application/json")
                        app)
    (app (mock/request :get "/api/customers/1"))
-   (app (mock/request :get "/api/customers/3333"))
-   (seed-customers db))
+   (app (mock/request :get "/api/customers/888"))
+
+   (seed-customers db)
+   (sql/db-do-commands db (sql/create-table-ddl :customers
+                                                [:id "bigint auto_increment PRIMARY KEY"]
+                                                [:name "varchar(256)"]))
+   (sql/db-do-commands db
+                       (sql/drop-table-ddl :customers))
+   (app (mock/content-type
+         (mock/request :post "/api/customers"
+                       "{\"customer\":{\"name\":\"Bill\"}}")
+         "application/json"))
+
+   )
+
+(not nil)
+
+(app (mock/content-type (mock/request :post "/collection" "{\"data\" : \"Smile\"}")
+                        "application/json"))
+
+(app (mock/content-type (mock/request :put "/collection/41279" "{\"data\" : \"Update here\"}")
+                        "application/json"))

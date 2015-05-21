@@ -23,4 +23,4 @@
     (with-redefs [brownbag.models.customer/update-customer (fn [_] 1)
                   get-customer (fn [_] {:customer {:id 100 :name "updated customer"}})]
       (is (= (update-customer {:id 100 :name "updated customer"})
-             {:customer {:id 100 :name "updated customer"}})))))
+             1)))))
