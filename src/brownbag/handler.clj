@@ -1,6 +1,6 @@
 (ns brownbag.handler
   (:require [brownbag
-             [customer-handler :refer [customer-routes collection-example]]
+             [customer-handler :refer [customer-routes]]
              [middleware :refer [wrap-request-logger wrap-response-logger]]]
             [cheshire.core :refer :all]
             [compojure
@@ -8,7 +8,9 @@
              [handler :as handler]
              [route :as route]]
             [liberator.core :refer :all]
-            [ring.middleware.multipart-params :refer [wrap-multipart-params]]))
+            [ring.middleware
+             [defaults :refer [wrap-defaults api-defaults]]
+             [multipart-params :refer [wrap-multipart-params]]]))
 
 (defresource root
   :available-media-types ["application/json"]
@@ -25,7 +27,8 @@
 
 (def app
   (->
-   (handler/api api-routes)
+   api-routes
+   (wrap-defaults api-defaults)
    (wrap-multipart-params)
    (wrap-request-logger)
    (wrap-response-logger)))
