@@ -5,11 +5,10 @@
             [cheshire.core :refer :all]
             [compojure
              [core :refer :all]
-             [handler :as handler]
              [route :as route]]
             [liberator.core :refer :all]
             [ring.middleware
-             [defaults :refer [wrap-defaults api-defaults]]
+             [defaults :refer [api-defaults wrap-defaults]]
              [multipart-params :refer [wrap-multipart-params]]]))
 
 (defresource root
