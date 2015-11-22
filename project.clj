@@ -8,7 +8,11 @@
                  [ring-middleware-format "0.5.0"]
                  [org.clojure/tools.logging "0.3.1"]
                  [log4j "1.2.17"]
-                 [ring/ring-json "0.3.1"]]
+                 [ring/ring-json "0.3.1"]
+                 [ring/ring-jetty-adapter "1.4.0"]
+                 [org.clojure/tools.nrepl "0.2.11"]]
+  :main brownbag.main
+  :aot  [brownbag.main]
   :plugins [[lein-ring "0.8.13"]]
   :ring {:handler brownbag.handler/app}
   :profiles
